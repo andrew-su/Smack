@@ -94,12 +94,25 @@ public class DataFormProvider extends PacketExtensionProvider<DataForm> {
 
     private FormField parseField(XmlPullParser parser) throws XmlPullParserException, IOException {
         final int initialDepth = parser.getDepth();
-        FormField formField = new FormField(parser.getAttributeValue("", "var"));
-        formField.setLabel(parser.getAttributeValue("", "label"));
-        String typeString = parser.getAttributeValue("", "type");
+        FormField formField;
+        final String fieldName = parser.getAttributeValue("", "var");
+        final String label = parser.getAttributeValue("", "label");
+        final String typeString = parser.getAttributeValue("", "type");
+        FormField.Type type = null;
         if (typeString != null) {
-            formField.setType(FormField.Type.fromString(typeString));
+            type = FormField.Type.fromString(typeString);
         }
+
+        if (typeString != null && type == FormField.Type.fixed) {
+            formField = new FormField();
+        } else {
+            formField = new FormField(fieldName);
+            if (type != null) {
+                formField.setType(type);
+            }
+        }
+
+        formField.setLabel(label);
         outerloop: while (true) {
             int eventType = parser.next();
             switch (eventType) {
