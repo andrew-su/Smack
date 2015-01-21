@@ -16,10 +16,10 @@
  */
 package org.jivesoftware.smackx.delay.provider;
 
+import org.jxmpp.util.XmppDateTime;
+
 import java.text.ParseException;
 import java.util.Date;
-
-import org.jxmpp.util.XmppDateTime;
 
 /**
  * The DelayInformationProvider parses DelayInformation packets.
@@ -27,12 +27,15 @@ import org.jxmpp.util.XmppDateTime;
  * @author Florian Schmaus
  */
 public class LegacyDelayInformationProvider extends AbstractDelayInformationProvider {
-
     public static LegacyDelayInformationProvider INSTANCE = new LegacyDelayInformationProvider();
 
     @Override
     protected Date parseDate(String string) throws ParseException {
-        return XmppDateTime.parseDate(string);
+        final int last = string.lastIndexOf('.');
+        String resultString = string;
+        if (last != -1) {
+            resultString = string.substring(0, last);
+        }
+        return XmppDateTime.parseDate(resultString);
     }
-
 }
