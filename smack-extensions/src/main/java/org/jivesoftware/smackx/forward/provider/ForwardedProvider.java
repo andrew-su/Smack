@@ -26,6 +26,7 @@ import org.jivesoftware.smack.provider.PacketExtensionProvider;
 import org.jivesoftware.smack.util.PacketParserUtils;
 import org.jivesoftware.smackx.delay.packet.DelayInformation;
 import org.jivesoftware.smackx.delay.provider.DelayInformationProvider;
+import org.jivesoftware.smackx.delay.provider.LegacyDelayInformationProvider;
 import org.jivesoftware.smackx.forward.packet.Forwarded;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
@@ -54,7 +55,7 @@ public class ForwardedProvider extends PacketExtensionProvider<Forwarded> {
                 switch (name) {
                 case DelayInformation.ELEMENT:
                     if (DelayInformation.NAMESPACE.equals(namespace)) {
-                        di = DelayInformationProvider.INSTANCE.parse(parser, parser.getDepth());
+                        di = LegacyDelayInformationProvider.INSTANCE.parse(parser, parser.getDepth());
                     } else {
                         LOGGER.warning("Namespace '" + namespace + "' does not match expected namespace '"
                                         + DelayInformation.NAMESPACE + "'");
