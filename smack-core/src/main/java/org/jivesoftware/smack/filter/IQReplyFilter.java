@@ -98,7 +98,7 @@ public class IQReplyFilter implements PacketFilter {
         PacketFilter idFilter = new PacketIDFilter(iqPacket);
         iqAndIdFilter = new AndFilter(iqFilter, idFilter);
         fromFilter = new OrFilter();
-        fromFilter.addFilter(FromMatchesFilter.createFull(to));
+        fromFilter.addFilter(FromMatchesFilter.createBare(to));
         if (to == null) {
             fromFilter.addFilter(FromMatchesFilter.createBare(local));
             fromFilter.addFilter(FromMatchesFilter.createFull(server));
